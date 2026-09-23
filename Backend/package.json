@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Building Online Conferencing Room",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.10.2",
+    "socket.io": "^4.8.3"
+  }
+}
