@@ -43,6 +43,10 @@ export default function Authentication() {
         console.log(result);
         setMessages(result);
         setOpen(true);
+        setUsername("");
+        setError("");
+        setFormState(0);
+        setPassword("");
       }
     } catch (err) {
       let message =
@@ -127,6 +131,7 @@ export default function Authentication() {
                 name="Full Name"
                 label="Full Name"
                 type="Full Name"
+                value={name}
                 id="Full Name"
                 autoFocus
                 onChange={(e) => setName(e.target.value)}
@@ -141,6 +146,7 @@ export default function Authentication() {
               id="username"
               label="Username"
               name="username"
+              value={username}
               autoComplete="username"
               autoFocus
               onChange={(e) => setUsername(e.target.value)}
@@ -153,6 +159,7 @@ export default function Authentication() {
               label="Password"
               type="password"
               id="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <p style={{ color: "red" }}>{error}</p>
@@ -163,7 +170,7 @@ export default function Authentication() {
               sx={{ mt: 3, mb: 2 }}
               onClick={handleAuth}
             >
-              Sign In
+              {formState === 0 ? "Sign In" : "Sign Up"}
             </Button>
           </Box>
         </Box>
