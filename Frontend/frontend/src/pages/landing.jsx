@@ -28,7 +28,7 @@ export default function LandingPage() {
             <p>Cover a distance by Apna Video Call</p>
 
             <div role="button">
-              <Link to={"/home"}>Get Started</Link>
+              <Link to={"/auth"}>Get Started</Link>
             </div>
           </div>
           <div>
