@@ -124,3 +124,118 @@
   border-radius: 30px;
   z-index: 20;
 }
+/* chatroom */
+/* Container for the chat overlay */
+.chatRoom {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  height: 80vh;
+  background-color: #1e1e2f; /* Dark card background */
+  color: #ffffff; /* White text so heading and messages are visible */
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Keeps it on top of the video elements */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Chat Header */
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.chatHeader h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+/* Chat display area */
+.chattingDisplay {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+/* Message Bubble Styles */
+.messageBubble {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
+
+.myMessage {
+  align-self: flex-end;
+  background-color: #1976d2;
+  color: #ffffff;
+}
+
+.otherMessage {
+  align-self: flex-start;
+  background-color: #2e2e40;
+  color: #ffffff;
+}
+
+.messageSender {
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin: 0 0 2px 0;
+  opacity: 0.8;
+}
+
+.messageText {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.noMessages {
+  color: #888888;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* Input area styling */
+.chattingArea {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Override Material UI TextField dark mode text */
+.chattingArea .MuiOutlinedInput-root {
+  color: #ffffff;
+  background-color: #2b2b3d;
+  border-radius: 6px;
+}
+
+.chattingArea .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chattingArea .MuiInputBase-input::placeholder {
+  color: #aaa;
+  opacity: 1;
+}

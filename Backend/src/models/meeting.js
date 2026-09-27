@@ -1,18 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
-const meetingSchema = new Schema({
-  userId: {
-    type: String,
-  },
-  meetingCode: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-    required: true,
-  },
+const meetingSchema = new mongoose.Schema({
+  user_id: { type: String, required: true }, // Add this field
+  meetingCode: { type: String, required: true },
+  date: { type: Date, default: Date.now },
 });
 
 const Meeting = mongoose.model("Meeting", meetingSchema);

@@ -1,8 +1,10 @@
 import React from "react";
 import "./style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
+  const router = useNavigate();
+
   return (
     <>
       <div className="LandingPagecontainer">
@@ -11,10 +13,28 @@ export default function LandingPage() {
             <h2>Apna Video Call</h2>
           </div>
           <div className="navList">
-            <p>Join as Guest</p>
-            <p>Register</p>
+            <p
+              onClick={() => {
+                router("/q23qsc");
+              }}
+            >
+              Join as Guest
+            </p>
+            <p
+              onClick={() => {
+                router("/auth");
+              }}
+            >
+              Register
+            </p>
             <div>
-              <p>Login</p>
+              <p
+                onClick={() => {
+                  router("/auth");
+                }}
+              >
+                Login
+              </p>
             </div>
           </div>
         </nav>

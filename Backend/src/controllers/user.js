@@ -1,6 +1,8 @@
 import user from "../models/user.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import Meeting from "../models/meeting.js";
+import User from "../models/user.js";
 
 const login = async (req, res) => {
   try {
@@ -57,4 +59,45 @@ const register = async (req, res) => {
   }
 };
 
-export { login, register };
+const getUserHistory = async (req, res) => {
+  try {
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(400).json({ message: "Token required" });
+    }
+
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const meetings = await Meeting.find({ user_id: user.username });
+    return res.status(200).json(meetings);
+  } catch (e) {
+    return res.status(500).json({ message: e.message });
+  }
+};
+
+const addToHistory = async (req, res) => {
+  const { token, meeting_code } = req.body;
+
+  try {
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const newMeeting = new Meeting({
+      user_id: user.username, // Store user identifier
+      meetingCode: meeting_code,
+    });
+
+    await newMeeting.save();
+    return res.status(201).json({ message: "Added to history" });
+  } catch (e) {
+    return res.status(500).json({ message: e.message });
+  }
+};
+
+export { login, register, getUserHistory, addToHistory };

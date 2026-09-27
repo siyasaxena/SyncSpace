@@ -34,7 +34,7 @@ export default function VideoMeetComponent() {
   const [username, setUsername] = useState("");
   const [videos, setVideos] = useState([]);
 
-  // Immediately request browser camera/mic permissions on page load
+  // Get permissions on load
   useEffect(() => {
     getPermissions();
     return () => {
@@ -42,14 +42,13 @@ export default function VideoMeetComponent() {
     };
   }, []);
 
-  // Re-attach video stream whenever localVideoref becomes active
+  // Ensure local video stream stays attached
   useEffect(() => {
     if (localVideoref.current && window.localStream) {
       localVideoref.current.srcObject = window.localStream;
     }
   }, [askForUsername]);
 
-  // --- YOUR CHAT & MODAL HELPER FUNCTIONS ---
   const openChat = () => {
     setModal(true);
     setNewMessages(0);
@@ -66,8 +65,9 @@ export default function VideoMeetComponent() {
   const addMessage = (data, sender, socketIdSender) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { sender: sender, data: data },
+      { sender: sender, data: data, socketId: socketIdSender },
     ]);
+
     if (socketIdSender !== socketIdRef.current) {
       setNewMessages((prevNewMessages) => prevNewMessages + 1);
     }
@@ -80,7 +80,6 @@ export default function VideoMeetComponent() {
       setMessage("");
     }
   };
-  // -------------------------------------------
 
   const getPermissions = async () => {
     try {
@@ -174,6 +173,7 @@ export default function VideoMeetComponent() {
 
   const connectToSocketServer = () => {
     if (socketRef.current) socketRef.current.disconnect();
+
     socketRef.current = io.connect(server_url, { secure: false });
 
     socketRef.current.on("signal", gotMessageFromServer);
@@ -183,7 +183,6 @@ export default function VideoMeetComponent() {
       socketIdRef.current = socketRef.current.id;
     });
 
-    // Uses addMessage helper
     socketRef.current.on("chat-message", (data, sender, socketIdSender) => {
       addMessage(data, sender, socketIdSender);
     });
@@ -238,7 +237,8 @@ export default function VideoMeetComponent() {
           });
         }
 
-        if (id === socketIdRef.current) {
+        // Correct WebRTC offer condition: initiate offer if you are an existing user
+        if (id !== socketIdRef.current) {
           pc.createOffer().then((description) => {
             pc.setLocalDescription(description).then(() => {
               socketRef.current.emit(
@@ -339,36 +339,44 @@ export default function VideoMeetComponent() {
           {showModal && (
             <div className="chatRoom">
               <div className="chatContainer">
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <h1>Chat</h1>
-                  <IconButton onClick={closeChat} style={{ color: "black" }}>
+                <div className="chatHeader">
+                  <h2>Chat</h2>
+                  <IconButton onClick={closeChat} style={{ color: "#fff" }}>
                     <CloseIcon />
                   </IconButton>
                 </div>
                 <div className="chattingDisplay">
                   {messages.length !== 0 ? (
                     messages.map((item, index) => (
-                      <div style={{ marginBottom: "20px" }} key={index}>
-                        <p style={{ fontWeight: "bold" }}>{item.sender}</p>
-                        <p>{item.data}</p>
+                      <div
+                        key={index}
+                        className={`messageBubble ${
+                          item.socketId === socketIdRef.current
+                            ? "myMessage"
+                            : "otherMessage"
+                        }`}
+                      >
+                        <p className="messageSender">
+                          {item.socketId === socketIdRef.current
+                            ? "You"
+                            : item.sender}
+                        </p>
+                        <p className="messageText">{item.data}</p>
                       </div>
                     ))
                   ) : (
-                    <p>No Messages Yet</p>
+                    <p className="noMessages">No Messages Yet</p>
                   )}
                 </div>
                 <div className="chattingArea">
                   <TextField
                     value={message}
                     onChange={handleMessage}
-                    label="Enter Your chat"
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                    placeholder="Type a message..."
                     variant="outlined"
+                    size="small"
+                    fullWidth
                   />
                   <Button variant="contained" onClick={sendMessage}>
                     Send
