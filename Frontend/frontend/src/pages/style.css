@@ -59,3 +59,68 @@
   height: 70vh;
   width: auto;
 }
+
+/* video */
+/* Container for the main call screen */
+.meetVideoContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0b0c10;
+  overflow: hidden;
+}
+
+/* Local user video preview (bottom-left overlay) */
+.meetUserVideo {
+  position: absolute;
+  bottom: 90px;
+  left: 20px;
+  width: 220px;
+  height: 140px;
+  border-radius: 12px;
+  object-fit: cover;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Remote users video container grid */
+.conferenceView {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  width: calc(100% - 40px);
+  height: calc(100vh - 120px);
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+/* Each remote user video box */
+.conferenceView > div {
+  width: 320px;
+  height: 240px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1f2833;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.conferenceView video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Control buttons bar at the bottom */
+.buttonContainers {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  background-color: rgba(31, 40, 51, 0.9);
+  padding: 10px 20px;
+  border-radius: 30px;
+  z-index: 20;
+}
